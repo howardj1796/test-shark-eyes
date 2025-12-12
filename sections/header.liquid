@@ -114,6 +114,156 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  /* Custom dark header styling */
+  .header-wrapper {
+    background-color: #0a1628 !important;
+  }
+
+  .header-wrapper.color-inverse {
+    background-color: #0a1628 !important;
+  }
+
+  .header {
+    background-color: #0a1628 !important;
+  }
+
+  .header__menu-item {
+    color: #ffffff !important;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 0.05rem;
+  }
+
+  .header__menu-item:hover {
+    color: #ffffff !important;
+  }
+
+  .header__menu-item span {
+    color: #ffffff !important;
+  }
+
+  /* Logo image styling */
+  .header__heading-logo {
+    max-height: 50px;
+    width: auto;
+    height: auto;
+  }
+
+  /* Text logo styling (only when no logo image) */
+  .header__heading-link .h2 {
+    color: #ffffff !important;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+    text-decoration-thickness: 1px;
+  }
+
+  .header__heading-link:hover .h2 {
+    color: #ffffff !important;
+  }
+
+  .header__heading-logo-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  .header__icon {
+    color: #ffffff !important;
+  }
+
+  .header__icon svg {
+    fill: #ffffff !important;
+    stroke: #ffffff !important;
+    color: #ffffff !important;
+  }
+
+  .header__icon--summary {
+    color: #ffffff !important;
+  }
+
+  .header__icon--summary svg {
+    fill: #ffffff !important;
+    stroke: #ffffff !important;
+    color: #ffffff !important;
+  }
+
+  .header__inline-menu .list-menu__item {
+    color: #ffffff !important;
+  }
+
+  .header__submenu {
+    background-color: #0a1628 !important;
+  }
+
+  .header__submenu .header__menu-item {
+    color: #ffffff !important;
+  }
+
+  /* Currency selector styling */
+  .header__localization .disclosure__button {
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    background-color: transparent !important;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    min-height: auto;
+    height: auto;
+  }
+
+  .header__localization .disclosure__button:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .header__localization .disclosure__button span {
+    color: #ffffff !important;
+  }
+
+  .header__localization .disclosure__list {
+    background-color: #0a1628 !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  }
+
+  .header__localization .disclosure__link {
+    color: #ffffff !important;
+  }
+
+  .header__localization .disclosure__link:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+  }
+
+  .header__localization .icon-caret {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+  }
+
+  /* Icon caret styling */
+  .header__menu-item .icon-caret {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+  }
+
+  /* Cart count bubble */
+  .cart-count-bubble {
+    background-color: #ffffff !important;
+    color: #0a1628 !important;
+  }
+
+  /* Remove underline on hover for menu items */
+  .header__menu-item:hover span {
+    text-decoration: none !important;
+  }
+
+  details[open] > .header__menu-item {
+    text-decoration: none !important;
+  }
+
+  details[open] > .header__menu-item span {
+    text-decoration: none !important;
+  }
 {%- endstyle -%}
 
 <script src="{{ 'details-disclosure.js' | asset_url }}" defer="defer"></script>
@@ -592,29 +742,7 @@
     {%- endif -%}
 
     <div class="header__icons{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header__icons--localization header__localization{% endif %}">
-      <div class="desktop-localization-wrapper">
-        {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
-          <localization-form class="small-hide medium-hide">
-            {%- form 'localization', id: 'HeaderCountryForm', class: 'localization-form' -%}
-              <div class="no-js-hidden">
-                <h2 class="visually-hidden" id="HeaderCountryLabel">{{ 'localization.country_label' | t }}</h2>
-                {%- render 'country-localization', localPosition: 'HeaderCountry' -%}
-              </div>
-            {%- endform -%}
-          </localization-form>
-        {% endif %}
 
-        {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
-          <localization-form class="small-hide medium-hide">
-            {%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
-              <div class="no-js-hidden">
-                <h2 class="visually-hidden" id="HeaderLanguageLabel">{{ 'localization.language_label' | t }}</h2>
-                {%- render 'language-localization', localPosition: 'HeaderLanguage' -%}
-              </div>
-            {%- endform -%}
-          </localization-form>
-        {%- endif -%}
-      </div>
       <details-modal class="header__search">
         <details>
           <summary class="header__icon header__icon--search header__icon--summary link focus-inset modal__toggle" aria-haspopup="dialog" aria-label="{{ 'general.search.search' | t }}">
@@ -737,6 +865,30 @@
           </div>
         {%- endif -%}
       </a>
+      
+      <div class="desktop-localization-wrapper">
+        {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
+          <localization-form class="small-hide medium-hide">
+            {%- form 'localization', id: 'HeaderCountryForm', class: 'localization-form' -%}
+              <div class="no-js-hidden">
+                <h2 class="visually-hidden" id="HeaderCountryLabel">{{ 'localization.country_label' | t }}</h2>
+                {%- render 'country-localization', localPosition: 'HeaderCountry' -%}
+              </div>
+            {%- endform -%}
+          </localization-form>
+        {% endif %}
+  
+        {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
+          <localization-form class="small-hide medium-hide">
+            {%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
+              <div class="no-js-hidden">
+                <h2 class="visually-hidden" id="HeaderLanguageLabel">{{ 'localization.language_label' | t }}</h2>
+                {%- render 'language-localization', localPosition: 'HeaderLanguage' -%}
+              </div>
+            {%- endform -%}
+          </localization-form>
+        {%- endif -%}
+      </div>
     </div>
   </header>
 </{% if section.settings.sticky_header_type != 'none' %}sticky-header{% else %}div{% endif %}>
