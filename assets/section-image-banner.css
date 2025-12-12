@@ -190,16 +190,20 @@
   }
 
   .banner:not(.banner--mobile-bottom):not(.email-signup-banner) .banner__box {
-    background: transparent;
+    background: transparent !important;
     --color-foreground: 255, 255, 255;
     --color-button: 255, 255, 255;
     --color-button-text: 0, 0, 0;
   }
 
   .banner:not(.banner--mobile-bottom) .banner__box {
-    border: none;
+    border: none !important;
     border-radius: 0;
-    box-shadow: none;
+    box-shadow: none !important;
+  }
+
+  .banner:not(.banner--mobile-bottom) .banner__box:after {
+    display: none !important;
   }
 
   .banner:not(.banner--mobile-bottom) .button--secondary {
@@ -313,6 +317,16 @@
   width: 100%;
   word-wrap: break-word;
   z-index: 1;
+}
+
+.banner__box--transparent {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.banner__box--transparent:after {
+  display: none !important;
 }
 
 @media screen and (min-width: 750px) {
@@ -437,6 +451,73 @@
   margin-top: 2rem;
 }
 
+/* Banner button gradient style */
+.banner__buttons .button {
+  background: linear-gradient(90deg, #4ECDC4 0%, #334FB4 100%) !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 5rem !important;
+  color: #FFFFFF !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow: 0 0 20px rgba(78, 205, 196, 0.4), 
+              0 0 40px rgba(51, 79, 180, 0.3),
+              0 4px 15px rgba(0, 0, 0, 0.2) !important;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.banner__buttons .button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, #5EDDD6 0%, #445FC5 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 0.8rem;
+  z-index: -1;
+}
+
+.banner__buttons .button:hover {
+  box-shadow: 0 0 30px rgba(78, 205, 196, 0.6), 
+              0 0 50px rgba(51, 79, 180, 0.4),
+              0 6px 20px rgba(0, 0, 0, 0.3) !important;
+  transform: translateY(-2px);
+}
+
+.banner__buttons .button:hover:before {
+  opacity: 1;
+}
+
+.banner__buttons .button:after {
+  display: none !important;
+  box-shadow: none !important;
+}
+
+.banner__buttons .button--secondary {
+  background: linear-gradient(90deg, #4ECDC4 0%, #334FB4 100%) !important;
+  background-color: transparent !important;
+  border: none !important;
+  color: #FFFFFF !important;
+}
+
+.banner__buttons .button--secondary:after {
+  display: none !important;
+  box-shadow: none !important;
+}
+
+.banner__buttons .button .button-label,
+.banner__buttons .button {
+  position: relative;
+  z-index: 1;
+}
+
 @media screen and (max-width: 749px) {
   .banner:not(.slideshow) .rte a,
   .banner:not(.slideshow) .inline-richtext a:hover,
@@ -451,4 +532,19 @@
   .banner--desktop-transparent .rte a:hover {
     color: currentColor;
   }
+}
+
+.banner__video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  background: #000000;
+}
+
+.banner__media video.banner__video {
+  background: #000000;
 }
