@@ -21,6 +21,137 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  .collection__header {
+    margin-bottom: 3rem;
+  }
+
+  .collection__header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .collection__header-left {
+    flex: 1;
+  }
+
+  .collection__main-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .collection__tabs {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .collection__tab {
+    background: none;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #666;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+
+  .collection__tab:hover {
+    color: #333;
+  }
+
+  .collection__tab--active {
+    color: #333;
+  }
+
+  .collection__tab--active::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    height: 2px;
+    background-color: #333;
+  }
+
+  .collection__tab-separator {
+    width: 1px;
+    height: 20px;
+    background: #ddd;
+    transform: rotate(15deg);
+    margin: 0 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .collection__header-right {
+    flex-shrink: 0;
+  }
+
+  .collection__view-all-button {
+    background: linear-gradient(to right, #00bcd4 0%, #0097a7 50%, #0277bd 100%);
+    color: white;
+    padding: 0.875rem 2.25rem;
+    border-radius: 50px;
+    border: none;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.8125rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 3px 12px rgba(0, 188, 212, 0.35), 0 1px 4px rgba(0, 188, 212, 0.25);
+    cursor: pointer;
+    display: inline-flex;
+  }
+
+  .collection__view-all-button:hover {
+    box-shadow: 0 4px 16px rgba(0, 188, 212, 0.4), 0 2px 6px rgba(0, 188, 212, 0.3);
+    color: white;
+  }
+
+  .collection__view-all-button:active {
+    box-shadow: 0 2px 8px rgba(0, 188, 212, 0.3), 0 1px 3px rgba(0, 188, 212, 0.25);
+  }
+
+  @media screen and (max-width: 749px) {
+    .collection__header-content {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .collection__main-title {
+      font-size: 2rem;
+    }
+
+    .collection__tabs {
+      flex-wrap: wrap;
+    }
+
+    .collection__tab {
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+    }
+
+    .collection__view-all-button {
+      width: 100%;
+      text-align: center;
+    }
+  }
 {%- endstyle -%}
 
 {%- liquid
@@ -45,10 +176,55 @@
 
 <div class="color-{{ section.settings.color_scheme }} isolate gradient">
   <div class="collection section-{{ section.id }}-padding{% if section.settings.full_width %} collection--full-width{% endif %}">
-    <div class="collection__title title-wrapper title-wrapper--no-top-margin page-width{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_desktop_slider %} collection__title--desktop-slider{% endif %}">
-      {%- if section.settings.title != blank -%}
-        <h2 class="title inline-richtext {{ section.settings.heading_size }}">{{ section.settings.title }}</h2>
-      {%- endif -%}
+    <div class="collection__header page-width">
+      <div class="collection__header-content">
+        <div class="collection__header-left">
+          {%- if section.settings.title != blank -%}
+            <h2 class="collection__main-title inline-richtext {{ section.settings.heading_size }}">{{ section.settings.title }}</h2>
+          {%- endif -%}
+          {%- if section.settings.show_tabs -%}
+            <nav class="collection__tabs" role="tablist">
+              <button
+                class="collection__tab{% if section.settings.active_tab == 'bestsellers' %} collection__tab--active{% endif %}"
+                role="tab"
+                aria-selected="{% if section.settings.active_tab == 'bestsellers' %}true{% else %}false{% endif %}"
+                data-tab="bestsellers"
+              >
+                {{ section.settings.tab_bestsellers_label | default: 'BEST SELLERS' }}
+              </button>
+              <span class="collection__tab-separator"></span>
+              <button
+                class="collection__tab{% if section.settings.active_tab == 'new' %} collection__tab--active{% endif %}"
+                role="tab"
+                aria-selected="{% if section.settings.active_tab == 'new' %}true{% else %}false{% endif %}"
+                data-tab="new"
+              >
+                {{ section.settings.tab_new_label | default: 'NEW ARRIVALS' }}
+              </button>
+              <span class="collection__tab-separator"></span>
+              <button
+                class="collection__tab{% if section.settings.active_tab == 'sale' %} collection__tab--active{% endif %}"
+                role="tab"
+                aria-selected="{% if section.settings.active_tab == 'sale' %}true{% else %}false{% endif %}"
+                data-tab="sale"
+              >
+                {{ section.settings.tab_sale_label | default: 'ON-SALE' }}
+              </button>
+            </nav>
+          {%- endif -%}
+        </div>
+        {%- if section.settings.show_view_all_button and section.settings.collection.url != blank -%}
+          <div class="collection__header-right">
+            <a
+              href="{{ section.settings.collection.url }}"
+              class="collection__view-all-button button"
+              aria-label="{{ 'sections.featured_collection.view_all_label' | t: collection_name: section.settings.collection.title }}"
+            >
+              {{ section.settings.view_all_button_text | default: 'VIEW ALL BESTSELLERS' }}
+            </a>
+          </div>
+        {%- endif -%}
+      </div>
       {%- if section.settings.description != blank
         or section.settings.show_description
         and section.settings.collection.description != empty
@@ -237,6 +413,66 @@
       "id": "show_view_all",
       "default": true,
       "label": "t:sections.featured-collection.settings.show_view_all.label"
+    },
+    {
+      "type": "header",
+      "content": "Navigation Tabs"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tabs",
+      "default": true,
+      "label": "Show navigation tabs"
+    },
+    {
+      "type": "select",
+      "id": "active_tab",
+      "label": "Active tab",
+      "options": [
+        {
+          "value": "bestsellers",
+          "label": "Best Sellers"
+        },
+        {
+          "value": "new",
+          "label": "New Arrivals"
+        },
+        {
+          "value": "sale",
+          "label": "On Sale"
+        }
+      ],
+      "default": "bestsellers"
+    },
+    {
+      "type": "text",
+      "id": "tab_bestsellers_label",
+      "label": "Best Sellers tab label",
+      "default": "BEST SELLERS"
+    },
+    {
+      "type": "text",
+      "id": "tab_new_label",
+      "label": "New Arrivals tab label",
+      "default": "NEW ARRIVALS"
+    },
+    {
+      "type": "text",
+      "id": "tab_sale_label",
+      "label": "On Sale tab label",
+      "default": "ON-SALE"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all_button",
+      "default": true,
+      "label": "Show view all button in header"
+    },
+    {
+      "type": "text",
+      "id": "view_all_button_text",
+      "label": "View all button text",
+      "default": "VIEW ALL BESTSELLERS"
     },
     {
       "type": "select",
