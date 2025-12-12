@@ -7,6 +7,16 @@
   margin: 0;
 }
 
+.title-wrapper--center {
+  text-align: center;
+  justify-content: center !important;
+}
+
+.title-wrapper--center .collection-list-title {
+  text-align: center;
+  width: 100%;
+}
+
 @media screen and (max-width: 749px) {
   .collection-list:not(.slider) {
     padding-left: 0;
@@ -58,4 +68,97 @@
 
 .collection-list-view-all {
   margin-top: 2rem;
+}
+
+/* Collection card overlay styles */
+.collection-card-overlay {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Override default card styles that hide content */
+.collection-card-wrapper .card--card.card--media .card__inner .card__information,
+.collection-card-wrapper .collection-card-overlay__text,
+.collection-card-wrapper .collection-card-overlay__description {
+  display: block !important;
+}
+
+.collection-card-overlay__content {
+  position: absolute !important;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 70%, transparent 100%);
+  z-index: 2;
+  display: block !important;
+  grid-template-rows: none !important;
+}
+
+.collection-card-overlay__text {
+  padding: 1.5rem;
+  text-align: center;
+  display: block !important;
+  grid-row-start: auto !important;
+}
+
+.collection-card-overlay__title {
+  margin: 0 0 0.5rem 0;
+  display: block !important;
+}
+
+.collection-card-overlay__title a {
+  color: #ffffff !important;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+  text-decoration: none;
+  font-family: var(--font-heading-family);
+  font-style: var(--font-heading-style);
+  display: block;
+}
+
+.collection-card-overlay__description {
+  color: #ffffff !important;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  margin: 0;
+  font-weight: 400;
+  font-family: var(--font-body-family);
+  font-style: var(--font-body-style);
+  display: block !important;
+}
+
+@media screen and (min-width: 750px) {
+  .collection-card-overlay__text {
+    padding: 2rem;
+  }
+  
+  .collection-card-overlay__title a {
+    font-size: 1.75rem;
+  }
+  
+  .collection-card-overlay__description {
+    font-size: 0.9375rem;
+  }
+}
+
+/* Ensure square aspect ratio for collection cards */
+.collection-card-wrapper .card--media .card__inner {
+  --ratio-percent: 100%;
+}
+
+.collection-card-wrapper .card__media {
+  margin: 0;
+  width: 100%;
+}
+
+.collection-card-wrapper .card__inner .card__media {
+  border-radius: 0;
+}
+
+.collection-card-wrapper .card__inner {
+  border-radius: 0;
 }
