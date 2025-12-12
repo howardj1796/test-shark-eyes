@@ -1,0 +1,308 @@
+{{ 'section-testimonials.css' | asset_url | stylesheet_tag }}
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign columns_mobile_int = section.settings.columns_mobile | plus: 0
+  assign show_mobile_slider = false
+  if section.settings.swipe_on_mobile and section.blocks.size > columns_mobile_int
+    assign show_mobile_slider = true
+  endif
+-%}
+
+<div class="testimonials color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width section-{{ section.id }}-padding">
+    {%- unless section.settings.heading == blank -%}
+      <div class="testimonials__header">
+        <h2 class="testimonials__title {{ section.settings.heading_size }}">
+          {{ section.settings.heading }}
+        </h2>
+        {%- if section.settings.subheading != blank -%}
+          <p class="testimonials__subheading">{{ section.settings.subheading }}</p>
+        {%- endif -%}
+      </div>
+    {%- endunless -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <slider-component class="slider-mobile-gutter">
+        <ul
+          class="testimonials__grid grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--3-col-desktop{% if show_mobile_slider %} slider slider--mobile grid--peek{% endif %}"
+          id="Slider-{{ section.id }}"
+          role="list"
+        >
+          {%- for block in section.blocks -%}
+            <li
+              id="Slide-{{ section.id }}-{{ forloop.index }}"
+              class="testimonials__card grid__item{% if show_mobile_slider %} slider__slide{% endif %}"
+              {{ block.shopify_attributes }}
+            >
+              <div class="testimonials__card-content">
+                <div class="testimonials__card-header">
+                  <div class="testimonials__avatar" style="background-color: {{ block.settings.avatar_color | default: '#2dd4bf' }};">
+                    <span class="testimonials__avatar-initials">{{ block.settings.initials | default: 'MC' }}</span>
+                  </div>
+                  <div class="testimonials__card-info">
+                    {%- if block.settings.name != blank -%}
+                      <h3 class="testimonials__name">{{ block.settings.name }}</h3>
+                    {%- endif -%}
+                    {%- if block.settings.title != blank -%}
+                      <p class="testimonials__title-text">{{ block.settings.title }}</p>
+                    {%- endif -%}
+                    </div>
+                  </div>
+                {%- if block.settings.quote != blank -%}
+                  <blockquote class="testimonials__quote">
+                    {{ block.settings.quote }}
+                  </blockquote>
+                {%- endif -%}
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        {%- if show_mobile_slider -%}
+          <div class="slider-buttons no-js-hidden medium-hide">
+            <button
+              type="button"
+              class="slider-button slider-button--prev"
+              name="previous"
+              aria-label="{{ 'general.slider.previous_slide' | t }}"
+            >
+              {% render 'icon-caret' %}
+            </button>
+            <div class="slider-counter caption">
+              <span class="slider-counter--current">1</span>
+              <span aria-hidden="true"> / </span>
+              <span class="visually-hidden">{{ 'general.slider.of' | t }}</span>
+              <span class="slider-counter--total">{{ section.blocks.size }}</span>
+            </div>
+            <button
+              type="button"
+              class="slider-button slider-button--next"
+              name="next"
+              aria-label="{{ 'general.slider.next_slide' | t }}"
+            >
+              {% render 'icon-caret' %}
+            </button>
+          </div>
+        {%- endif -%}
+      </slider-component>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank -%}
+      <div class="testimonials__button-wrapper">
+        <a
+          href="{{ section.settings.button_link }}"
+          class="testimonials__button button button--primary"
+          {% if section.settings.button_link == blank %}
+            role="link" aria-disabled="true"
+          {% endif %}
+        >
+          {{ section.settings.button_label | escape }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "WHAT PEOPLE ARE SAYING ABOUT SHARK EYES",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod",
+      "label": "Subheading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        }
+      ],
+      "default": "h1",
+      "label": "Heading size"
+    },
+    {
+      "type": "header",
+      "content": "Mobile settings"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ],
+      "default": "1",
+      "label": "Columns on mobile"
+    },
+    {
+      "type": "checkbox",
+      "id": "swipe_on_mobile",
+      "default": true,
+      "label": "Enable swipe on mobile"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "READ MORE TESTIMONIALS",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "accent-1",
+          "label": "Accent 1"
+        },
+        {
+          "value": "accent-2",
+          "label": "Accent 2"
+        },
+        {
+          "value": "background-1",
+          "label": "Background 1"
+        },
+        {
+          "value": "background-2",
+          "label": "Background 2"
+        },
+        {
+          "value": "inverse",
+          "label": "Inverse"
+        }
+      ],
+      "default": "background-1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "default": "MICHAEL CARTER",
+          "label": "Name"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Design Quarterly",
+          "label": "Title/Affiliation"
+        },
+        {
+          "type": "richtext",
+          "id": "quote",
+          "default": "<p>\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\"</p>",
+          "label": "Quote"
+        },
+        {
+          "type": "text",
+          "id": "initials",
+          "default": "MC",
+          "label": "Avatar initials"
+        },
+        {
+          "type": "color",
+          "id": "avatar_color",
+          "label": "Avatar color",
+          "default": "#2dd4bf"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
