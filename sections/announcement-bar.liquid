@@ -1,3 +1,28 @@
+{%- style -%}
+  .announcement-bar {
+    background: linear-gradient(to right, #20B2AA, #4682B4) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+    position: relative;
+  }
+  
+  .announcement-bar__message {
+    color: #ffffff !important;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.15rem;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .announcement-bar__link {
+    color: #ffffff !important;
+  }
+  
+  .announcement-bar__link:hover {
+    background-color: transparent !important;
+  }
+{%- endstyle -%}
+
 {%- for block in section.blocks -%}
   {%- case block.type -%}
     {%- when 'announcement' -%}
